@@ -6,10 +6,15 @@ import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JPasswordField;
 
 @SuppressWarnings("serial")
@@ -38,11 +43,40 @@ public class LogInPage extends JFrame {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnNewButton = new JButton("Annulla");
-		panel.add(btnNewButton);
+		JButton pulsanteAnnulla = new JButton("Annulla");
+		pulsanteAnnulla.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		panel.add(pulsanteAnnulla);
 		
-		JButton btnNewButton_1 = new JButton("Inserisci");
-		panel.add(btnNewButton_1);
+		
+		JButton pulsanteInserisci = new JButton("Inserisci");
+		pulsanteInserisci.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent a) {
+				
+				String email=textField.getText();
+				char[] charPassword=passwordField.getPassword();
+				String passwordstr=new String(charPassword); // Corretta conversione
+				
+				
+				
+				try {
+					if (controller.checkLogIn(email, passwordstr)) {
+						controller.hideLogIn();
+						controller.showHome();
+					}
+				} catch (EmailFieldEmptyException e) {
+					JOptionPane.showMessageDialog(null, "Attenzione il campo E-mail è vuoto", "Attenzione", JOptionPane.WARNING_MESSAGE);
+				} catch (PasswordFieldEmptyException e1) {
+					JOptionPane.showMessageDialog(null, "Attenzione il campo Password è vuoto", "Attenzione", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		panel.add(pulsanteInserisci);
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.NORTH);
