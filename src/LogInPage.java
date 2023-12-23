@@ -65,14 +65,16 @@ public class LogInPage extends JFrame {
 				
 				
 				try {
-					if (controller.checkLogIn(email, passwordstr)) {
+						controller.checkLogIn(email, passwordstr);
 						controller.hideLogIn();
 						controller.showHome();
-					}
+					
 				} catch (EmailFieldEmptyException e) {
 					JOptionPane.showMessageDialog(null, "Attenzione il campo E-mail è vuoto", "Attenzione", JOptionPane.WARNING_MESSAGE);
-				} catch (PasswordFieldEmptyException e1) {
+				} catch (PasswordFieldEmptyException ee) {
 					JOptionPane.showMessageDialog(null, "Attenzione il campo Password è vuoto", "Attenzione", JOptionPane.WARNING_MESSAGE);
+				} catch (AccountNonExistentException eee) {
+					JOptionPane.showMessageDialog(null, "Account inesistente", "Errore", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
