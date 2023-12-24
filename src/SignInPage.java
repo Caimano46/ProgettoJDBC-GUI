@@ -1,38 +1,36 @@
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
 import java.awt.FlowLayout;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagLayout;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class LogInPage extends JFrame {
-	
+public class SignInPage extends JFrame{
+
 	
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private Controller controller;
 	
-	public LogInPage(Controller _controller) {
+	public SignInPage(Controller _controller) {
 		
 		controller=_controller;
 		setSize(500, 350);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setTitle("Log In");
+		setTitle("Sign In");
 		ImageIcon a=new ImageIcon("risorse/LogIn-SignInIcon.png");
 		setIconImage(a.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,24 +42,24 @@ public class LogInPage extends JFrame {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton pulsanteIscriviti = new JButton("Iscriviti");
-		pulsanteIscriviti.addActionListener(new ActionListener() {
+		JButton pulsanteAnnulla = new JButton("Torna indietro");
+		pulsanteAnnulla.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				controller.hideLogIn();
-				controller.showSignIn();
+				controller.hideSignIn();
+				controller.showLogIn();
 			}
 		});
 		
-		JLabel lblNewLabel_3 = new JLabel("Non hai un account? ");
+		JLabel lblNewLabel_3 = new JLabel("Hai già un account? ");
 		panel.add(lblNewLabel_3);
-		panel.add(pulsanteIscriviti);
+		panel.add(pulsanteAnnulla);
 		
 		JPanel panel_1 = new JPanel();
 		getContentPane().add(panel_1, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel = new JLabel("Inserisci i dati per il Log In");
+		JLabel lblNewLabel = new JLabel("Inserisci i dati per il Sign In:");
 		panel_1.add(lblNewLabel);
 		
 		JPanel panel_2 = new JPanel();
@@ -107,7 +105,7 @@ public class LogInPage extends JFrame {
 		panel_2.add(passwordField, gbc_passwordField);
 		
 		
-		JButton pulsanteInserisci = new JButton("Accedi");
+		JButton pulsanteInserisci = new JButton("Iscriviti");
 		GridBagConstraints gbc_pulsanteInserisci = new GridBagConstraints();
 		gbc_pulsanteInserisci.insets = new Insets(0, 0, 0, 5);
 		gbc_pulsanteInserisci.gridx = 2;
@@ -117,26 +115,25 @@ public class LogInPage extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent a) {
 				
-				String email=textField.getText();
-				char[] charPassword=passwordField.getPassword();
-				String passwordstr=new String(charPassword); // Non usare .toString!!
+				String email = textField.getText();
+				char[] passwordChar = passwordField.getPassword();
+				String password = new String(passwordChar);
 				
 				try {
-						controller.checkLogIn(email, passwordstr);
-						controller.hideLogIn();
-						controller.showHome();
+					controller.signIn(email, password);
 					
 				} catch (EmailFieldEmptyException e) {
 					JOptionPane.showMessageDialog(null, "Attenzione il campo E-mail è vuoto", "Attenzione", JOptionPane.INFORMATION_MESSAGE);
-				} catch (PasswordFieldEmptyException ee) {
+				} catch (PasswordFieldEmptyException e) {
 					JOptionPane.showMessageDialog(null, "Attenzione il campo Password è vuoto", "Attenzione", JOptionPane.INFORMATION_MESSAGE);
-				} catch (AccountNonExistentException eee) {
-					JOptionPane.showMessageDialog(null, "Account inesistente", "Errore", JOptionPane.INFORMATION_MESSAGE);
-				} catch (SQLException eeee) {
+				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, "Errore nel Database (ResultSet)", "DataBase error", JOptionPane.WARNING_MESSAGE);
 				}
+			
+				
 			}
 		});
 	}
-
+	
+	
 }
